@@ -1,9 +1,13 @@
 import express from 'express';
+import path from 'path';
 
 const app = express();
 
 // Enable JSON request body
 app.use(express.json());
+
+// Expose assets
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // Endpoints
 app.get('/', (req, res) => res.status(200).send({ message: 'YAY! Congratulations! Your first endpoint is working' }));
