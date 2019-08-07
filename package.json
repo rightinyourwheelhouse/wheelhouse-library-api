@@ -19,9 +19,13 @@
     "@babel/preset-env": "^7.5.5",
     "babel-cli": "^6.26.0",
     "babel-watch": "^7.0.0",
+    "dotenv": "^8.0.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^9.1.0"
+    "eslint-plugin-node": "^9.1.0",
+    "express-session": "^1.16.2",
+    "passport": "^0.4.0",
+    "passport-slack": "0.0.7"
   }
 }
