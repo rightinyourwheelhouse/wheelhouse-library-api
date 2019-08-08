@@ -4,6 +4,7 @@ import {Pool} from 'pg';
 import cors from 'cors';
 
 import {getAllBooks} from './models/book';
+import {upsertUsers} from "./models/user";
 
 const corsOptions = {
     origin: 'http://localhost:1234',
@@ -15,7 +16,7 @@ const app = express();
 const pool = new Pool({
     user: 'postgres',
     host: '127.0.0.1',
-    database: 'WheelhouseLibrary',
+    database: 'postgres',
     password: '',
     port: 54320,
 });
@@ -50,4 +51,11 @@ app.get('/auth', cors(), (req, res) => {
 
 // Listen on port 3000
 app.listen(3000);
+
+upsertUsers(pool, [{
+    id: 'd10f97ac-c326-4b1b-a4c5-2e942b6a57ad',
+    username: 'roel',
+    email: 'hue@hue.be',
+    avatar: 'https://picsum.photos/id/823/200/200'
+}]);
 console.log('Running Wheelhouse Library RESTful API @ PORT:3000'); // eslint-disable-line
