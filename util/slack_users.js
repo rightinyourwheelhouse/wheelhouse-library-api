@@ -8,12 +8,18 @@ const headers = {
 
 const options = {
     headers: headers,
-    uri: `${BASE_URL}/users.list?token=${process.env.SLACK_OAUTH_TOKEN}`
+    uri: `${BASE_URL}/users.list?token=${process.env.SLACK_OAUTH_TOKEN}`,
+    json: true
 };
 
 
 async function getUsers() {
-    return rp(options).then(user_list => user_list).catch(err => err);
+    return rp(options).then(user_list => user_list.members.map(user => {
+        return {
+        'id': user.id,
+        'username': user.name,
+        'avatar': user.profile.image_192
+    }})).catch(err => err);
 }
 
 module.exports = {getUsers};
