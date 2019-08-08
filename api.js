@@ -1,8 +1,13 @@
 import express from 'express';
 import path from 'path';
 import { Pool } from 'pg';
+import cors from 'cors';
 
 import getAllBooks from './models/book';
+
+const corsOptions = {
+  origin: 'http://localhost:1234',
+};
 
 const app = express();
 
@@ -18,18 +23,29 @@ const pool = new Pool({
 // Enable JSON request body usage
 app.use(express.json());
 
+// CORS allow options
+app.options('*', cors());
+
 // Expose assets from public folder
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // ---------
 // Endpoints
 // ---------
-app.get('/', (req, res) => res.status(200).send({ message: 'Wheelhouse Library API' }));
+app.get('/',
+  (req, res) => res.status(200).send({ message: 'Wheelhouse Library API' }));
 
 // Get all books
-app.get('/api/v1/books', async (req, res) => {
-  const { rows } = await getAllBooks(pool);
-  res.json(rows);
+app.get('/api/v1/books',
+  async (req, res) => {
+    const { rows } = await getAllBooks(pool);
+    res.json(rows);
+  });
+
+// Authorize via Slack
+app.get('/auth', cors(), (req, res) => {
+  console.log(req.body);
+  res.status(200).send();
 });
 
 // Listen on port 3000
