@@ -5,6 +5,9 @@ import cors from 'cors';
 
 import {getAllBooks} from './models/book';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 const corsOptions = {
     origin: 'http://localhost:1234',
 };
