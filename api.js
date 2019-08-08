@@ -7,6 +7,8 @@ import {getAllBooks} from './models/book';
 import {upsertUsers} from "./models/user";
 
 import dotenv from 'dotenv';
+import {getUsers} from "./util/slack_users";
+
 dotenv.config();
 
 const corsOptions = {
@@ -55,10 +57,10 @@ app.get('/auth', cors(), (req, res) => {
 // Listen on port 3000
 app.listen(3000);
 
-upsertUsers(pool, [{
-    id: 'd10f97ac-c326-4b1b-a4c5-2e942b6a57ad',
-    username: 'roel',
-    email: 'hue@hue.be',
-    avatar: 'https://picsum.photos/id/823/200/200'
-}]);
+getUsers().then(
+    users => {
+        upsertUsers(pool, users);
+    }
+);
+
 console.log('Running Wheelhouse Library RESTful API @ PORT:3000'); // eslint-disable-line

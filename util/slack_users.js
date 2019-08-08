@@ -14,12 +14,17 @@ const options = {
 
 
 async function getUsers() {
-    return rp(options).then(user_list => user_list.members.map(user => {
-        return {
-        'id': user.id,
-        'username': user.name,
-        'avatar': user.profile.image_192
-    }})).catch(err => err);
+    return rp(options)
+        .then(user_list => user_list.members
+            ? user_list.members.map(user => {
+                return {
+                    'id': user.id,
+                    'username': user.name,
+                    'avatar': user.profile.image_192
+                }
+            })
+            : [])
+        .catch(err => err);
 }
 
 module.exports = {getUsers};
