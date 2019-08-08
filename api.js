@@ -4,7 +4,7 @@ import {Pool} from 'pg';
 import cors from 'cors';
 
 import {getAllBooks} from './models/book';
-import {upsertUsers} from "./models/user";
+import {getAllUsers, upsertUsers} from "./models/user";
 
 import dotenv from 'dotenv';
 import {getUsers} from "./util/slack_users";
@@ -45,6 +45,13 @@ app.get('/',
 app.get('/api/v1/books',
     async (req, res) => {
         const {rows} = await getAllBooks(pool);
+        res.json(rows);
+    });
+
+// Get all books
+app.get('/api/v1/users',
+    async (req, res) => {
+        const {rows} = await getAllUsers(pool);
         res.json(rows);
     });
 
