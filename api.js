@@ -11,11 +11,11 @@ import { getUsers } from './util/slack_users';
 
 dotenv.config();
 
-// const corsOptions = {
-//   origin: 'http://localhost:1234',
-// };
+const corsOptions = {
+  origin: 'http://localhost:1234',
+};
 
-const app = express();
+const app = express(corsOptions);
 
 // Make a pool-based connection to Postgres
 const pool = new Pool({
