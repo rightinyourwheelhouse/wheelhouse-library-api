@@ -13,7 +13,7 @@ const options = {
 };
 
 
-async function getUsers() {
+export async function getUsers() {
     return rp(options)
         .then(user_list => user_list.members
             ? user_list.members.map(user => {
@@ -27,4 +27,4 @@ async function getUsers() {
         .catch(err => err);
 }
 
-module.exports = {getUsers};
+
