@@ -12,7 +12,6 @@ const options = {
     json: true
 };
 
-
 export async function getUsers() {
     return rp(options)
         .then(user_list => user_list.members
