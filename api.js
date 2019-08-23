@@ -15,7 +15,7 @@ const corsOptions = {
   origin: 'http://localhost:1234',
 };
 
-const app = express(corsOptions);
+const app = express();
 
 // Make a pool-based connection to Postgres
 const pool = new Pool({
@@ -30,7 +30,7 @@ const pool = new Pool({
 app.use(express.json());
 
 // CORS allow options
-app.options('*', cors());
+app.use(cors(corsOptions));
 
 // Expose assets from public folder
 app.use('/static', express.static(path.join(__dirname, 'public')));
