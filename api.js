@@ -4,10 +4,11 @@ import { Pool } from 'pg';
 import cors from 'cors';
 
 import dotenv from 'dotenv';
-import { getAllBooks } from './models/book';
+import {getAllBooks, upsertBooks} from './models/book';
 import { getAllUsers, upsertUsers } from './models/user';
 
 import { getUsers } from './util/slack_users';
+import {getBooks} from "./util/book-seed";
 
 dotenv.config();
 
@@ -69,5 +70,7 @@ getUsers().then(
     upsertUsers(pool, users);
   },
 );
+
+upsertBooks(pool, getBooks());
 
 console.log('Running Wheelhouse Library RESTful API @ PORT:3000'); // eslint-disable-line
