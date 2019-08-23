@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel api.js --out-dir dist",
-    "start": "babel-watch api.js"
+    "start": "babel-watch api.js -I"
   },
   "author": "rafael@wheelhouse.be",
   "license": "ISC",

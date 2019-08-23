@@ -52,9 +52,9 @@ app.get('/api/v1/books',
 
 app.post('/api/v1/books/:id/rent',
   async (req, res) => {
-    return rentBook(pool, req.params.id, req.header('account-id'))
-        .catch(err => err.message === bookAlreadyRentedError ? res.status(403).send() : res.status(500).send())
-        .then(() => res.status(204).send());
+    rentBook(pool, req.params.id, req.header('account-id'))
+        .then(() => res.status(204).send())
+        .catch(err => err.message === bookAlreadyRentedError ? res.status(403).send() : res.status(500).send());
   });
 
 // Get all books

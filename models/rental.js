@@ -19,8 +19,7 @@ export function getRentalsForAccount(pool, accountId) {
  * @param accountId {string} - user ID
  */
 export function rentBook(pool, bookId, accountId) {
-
-    getRentalsForBook(pool, bookId)
+    return getRentalsForBook(pool, bookId)
         .then(rentals =>
             rentals.length > 0
                 ? throw new Error(bookAlreadyRentedError)
