@@ -21,7 +21,7 @@ export function getRentalsForAccount(pool, accountId) {
 export function rentBook(pool, bookId, accountId) {
     return getRentalsForBook(pool, bookId)
         .then(rentals =>
-            rentals.length > 0
+            rentals.rows.length > 0
                 ? throw new Error(bookAlreadyRentedError)
                 : pool.query(`INSERT INTO  "Library"."Rental" (bookId, accountId) VALUES ('${bookId}', '${accountId}')`));
 
