@@ -47,8 +47,8 @@ app.get('/',
 // Get all books
 app.get('/api/v1/books',
     async (req, res) => {
-        const {rows} = await getAllBooks(pool);
-        res.json(rows);
+        const books = await getAllBooks(pool);
+        res.json(books);
     });
 
 app.post('/api/v1/books',
@@ -63,10 +63,13 @@ app.post('/api/v1/books',
 
 app.post('/api/v1/books/:id/rent',
     async (req, res) => {
-        rentBook(pool, req.params.id, req.header('account-id'))
-            .then(() => getBook(pool, id))
+        const bookId = req.params.id;
+        rentBook(pool, bookId, req.header('account-id'))
+            .then(() => getBook(pool, bookId))
             .then(book => res.json(book))
-            .catch(err => err.message === bookAlreadyRentedError ? res.status(403).send() : res.status(500).send());
+            .catch(err => err.message === bookAlreadyRentedError
+                ? res.status(403).send(err.message)
+                : res.status(500).send(err.message));
     });
 
 // Get all books

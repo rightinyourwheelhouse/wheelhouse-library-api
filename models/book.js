@@ -6,18 +6,17 @@ function get(pool, id) {
             LEFT JOIN "Library"."Rental" 
             ON "Rental".bookId = "Book".id`;
     if (id) {
-        query.concat(`WHERE "Book".id = ${id}`)
+        query.concat(`WHERE "Book".id = ${id}'`)
     }
-
     return pool.query(query);
 }
 
 export function getAllBooks(pool) {
-    return get(pool);
+    return get(pool).then(res => res.rows);
 }
 
 export function getBook(pool, bookId) {
-    return get(pool, bookId).then(bookArr => bookArr.length ? bookArr[0] : null);
+    return get(pool, bookId).then(res => res.rows.length ? res.rows[0] : null);
 }
 
 /**
