@@ -4,7 +4,7 @@ import {Pool} from 'pg';
 import cors from 'cors';
 
 import dotenv from 'dotenv';
-import {getAllBooks, upsertBooks} from './models/book';
+import {getAllBooks, getBook, upsertBooks} from './models/book';
 import {getAllUsers, upsertUsers} from './models/user';
 
 import {getUsers} from './util/slack_users';
@@ -54,15 +54,18 @@ app.get('/api/v1/books',
 app.post('/api/v1/books',
     async (req, res) => {
         const {ISBN, ownerId} = req.body;
-        upsertBooks(pool, [{id: generateUUID(), ISBN, ownerId}])
-            .then(() => res.status(204).send())
+        const id = generateUUID();
+        upsertBooks(pool, [{id, ISBN, ownerId}])
+            .then(() => getBook(pool, id))
+            .then(book => res.json(book))
             .catch(() => res.status(500).send());
     });
 
 app.post('/api/v1/books/:id/rent',
     async (req, res) => {
         rentBook(pool, req.params.id, req.header('account-id'))
-            .then(() => res.status(204).send())
+            .then(() => getBook(pool, id))
+            .then(book => res.json(book))
             .catch(err => err.message === bookAlreadyRentedError ? res.status(403).send() : res.status(500).send());
     });
 

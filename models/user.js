@@ -10,6 +10,6 @@ export function getAllUsers(pool) {
  * @param {Array<{id,username,avatar}>} users - the users to upsert
  */
 export function upsertUsers(pool, users) {
-    upsert(users, 'Account', pool);
+    return upsert(users, 'Account', pool);
 }
 
