@@ -1,4 +1,5 @@
 import {upsert} from "../util/db-utils";
+import request from 'request-promise'
 
 function get(pool, id) {
     const query = `SELECT "Book".*, "Rental".accountId as rentee, "Rental".startDate as rentalStartDate 
@@ -22,8 +23,25 @@ export function getBook(pool, bookId) {
 /**
  * Upsert books
  * @param {Connection} pool - the pg pool
- * @param {Array<{id,title,author,ISBN,pages,rating,coverImg,rentalPeriod,ownerId }>} books - the users to upsert
+ * @param {Array<{id,ISBN,ownerId }>} books - the users to upsert
  */
 export function upsertBooks(pool, books) {
-    return upsert(books, 'Book', pool);
+    return Promise.all(books.map(
+        book => request({
+            uri: `https://www.googleapis.com/books/v1/volumes?q=+isbn:${book.ISBN}`,
+            json: true
+        }).then(books => {
+            if (books.items) {
+                const metadata = books.items[0].volumeInfo;
+                return {
+                    ...book,
+                    title: `${metadata.title}: ${metadata.subtitle}`.replace('\'', '\'\''),
+                    author: metadata.authors.join(', ').replace('\'', '\'\''),
+                    pages: metadata.pageCount,
+                    coverImg: metadata.imageLinks.thumbnail
+                };
+            }
+        })))
+        .then(books => upsert(books, 'Book', pool))
+
 }

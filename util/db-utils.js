@@ -6,7 +6,9 @@
  */
 export function upsert(inserts, tableName, pool) {
     return Promise.all(
-        inserts.map(insert => `
+        inserts
+            .filter(insert => insert)
+            .map(insert => `
         INSERT INTO  "Library"."${tableName}" as tbl (${Object.keys(insert).join(', ')})
         VALUES
            (${Object.values(insert).map(value => `'${value}'`).join(', ')}) 
