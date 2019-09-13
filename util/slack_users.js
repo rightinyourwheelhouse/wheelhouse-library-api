@@ -1,4 +1,6 @@
-const rp = require('request-promise');
+import chalk from "chalk";
+import rp from "request-promise";
+
 require('dotenv').config();
 
 const BASE_URL = 'https://slack.com/api';
@@ -22,8 +24,11 @@ export async function getUsers() {
                     'avatar': user.profile.image_192
                 }
             })
-            : [])
-        .catch(err => err);
+            : throw new Error(`Failed to get slack users because: ${user_list.error}`))
+        .catch(err => {
+            console.error(chalk.red.inverse(err.message));
+            return [];
+        });
 }
 
 

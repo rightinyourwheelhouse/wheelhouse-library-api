@@ -6,7 +6,7 @@ export function getAllUsers(pool) {
 
 /**
  * Upsert users
- * @param {Connection} pool - the pg pool
+ * @param {Pool} pool - the pg pool
  * @param {Array<{id,username,avatar}>} users - the users to upsert
  */
 export function upsertUsers(pool, users) {

@@ -1,6 +1,6 @@
 /**
  * Upsert users
- * @param {Connection} pool - the pg pool
+ * @param {Pool} pool - the pg pool
  * @param {string} tableName - the name of the table to upsert into
  * @param {Array<Object>} inserts - the objects to upsert into the table
  */
