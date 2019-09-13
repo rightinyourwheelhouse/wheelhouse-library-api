@@ -35,7 +35,9 @@ export function upsertBooks(pool, books) {
                 const metadata = books.items[0].volumeInfo;
                 return {
                     ...book,
-                    title: `${metadata.title}: ${metadata.subtitle}`.replace('\'', '\'\''),
+                    title: (metadata.subtitle
+                        ? `${metadata.title}: ${metadata.subtitle}`
+                        : metadata.title).replace('\'', '\'\''),
                     author: metadata.authors.join(', ').replace('\'', '\'\''),
                     pages: metadata.pageCount,
                     coverImg: metadata.imageLinks.thumbnail
