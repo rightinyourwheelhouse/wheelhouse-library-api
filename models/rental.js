@@ -1,4 +1,5 @@
 export const bookAlreadyRentedError = 'Book already rented';
+export const bookNotRentedError = 'Book is not rented';
 
 export function getAllRentals(pool) {
     return pool.query('SELECT * FROM "Library"."Rental"');
@@ -24,6 +25,17 @@ export function rentBook(pool, bookId, accountId) {
             rentals.rows.length > 0
                 ? throw new Error(bookAlreadyRentedError)
                 : pool.query(`INSERT INTO  "Library"."Rental" (bookId, accountId) VALUES ('${bookId}', '${accountId}')`));
+}
 
-
+/**
+ * Return book
+ * @param {Connection} pool - the pg pool
+ * @param bookId {string} - book ID
+ */
+export function returnBook(pool, bookId) {
+    return getRentalsForBook(pool, bookId)
+        .then(rentals =>
+            rentals.rows.length <= 0
+                ? throw new Error(bookNotRentedError)
+                : pool.query(`DELETE FROM "Library"."Rental" WHERE bookId = '${bookId}'`));
 }

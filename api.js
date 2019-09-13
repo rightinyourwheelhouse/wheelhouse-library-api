@@ -9,7 +9,7 @@ import {getAllUsers, upsertUsers} from './models/user';
 
 import {getUsers} from './util/slack_users';
 import {getBooks} from "./util/book-seed";
-import {bookAlreadyRentedError, getAllRentals, rentBook} from "./models/rental";
+import {bookAlreadyRentedError, bookNotRentedError, getAllRentals, rentBook, returnBook} from "./models/rental";
 import {generateUUID} from "./util/uuid";
 
 dotenv.config();
@@ -68,6 +68,17 @@ app.post('/api/v1/books/:id/rent',
             .then(() => getBook(pool, bookId))
             .then(book => res.json(book))
             .catch(err => err.message === bookAlreadyRentedError
+                ? res.status(403).send(err.message)
+                : res.status(500).send(err.message));
+    });
+
+app.post('/api/v1/books/:id/return',
+    async (req, res) => {
+        const bookId = req.params.id;
+        returnBook(pool, bookId)
+            .then(() => getBook(pool, bookId))
+            .then(book => res.json(book))
+            .catch(err => err.message === bookNotRentedError
                 ? res.status(403).send(err.message)
                 : res.status(500).send(err.message));
     });
