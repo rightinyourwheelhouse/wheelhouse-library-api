@@ -47,11 +47,15 @@ function setupApp(pool) {
     app.listen(3000);
 }
 
+async function seed(pool) {
+    await getUsers().then((users) => upsertUsers(pool, users));
+    await upsertBooks(pool, getBooks());
+}
+
 setupDatabase()
     .then(async pool => {
         setupApp(pool);
-        await getUsers().then((users) => upsertUsers(pool, users));
-        await upsertBooks(pool, getBooks());
+        // await seed(pool);
         console.log('Running Wheelhouse Library RESTful API @ PORT:3000'); // eslint-disable-line
 
     });

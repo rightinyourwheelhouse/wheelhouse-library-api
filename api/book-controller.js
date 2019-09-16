@@ -16,7 +16,7 @@ export function books(app, pool) {
             upsertBooks(pool, [{id, ISBN, ownerId}])
                 .then(() => getBook(pool, id))
                 .then(book => res.json(book))
-                .catch(() => res.status(500).send());
+                .catch(err => res.status(500).send(err.message));
         });
 
     app.post('/api/v1/books/:id/rent',

@@ -1,3 +1,10 @@
+function filterEmptyValues(insert) {
+    return Object.entries(insert)
+        .reduce((object, [key, value]) => value
+            ? Object.assign(object, {[key]: value})
+            : object, {});
+}
+
 /**
  * Upsert users
  * @param {Pool} pool - the pg pool
@@ -8,6 +15,7 @@ export function upsert(inserts, tableName, pool) {
     return Promise.all(
         inserts
             .filter(insert => insert)
+            .map(insert => filterEmptyValues(insert))
             .map(insert => `
         INSERT INTO  "Library"."${tableName}" as tbl (${Object.keys(insert).join(', ')})
         VALUES
