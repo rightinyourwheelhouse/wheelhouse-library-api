@@ -16,6 +16,8 @@ export function bookController(app, pool) {
     async (req, res) => {
       const { ISBN, ownerId } = req.body;
 
+      console.log('REQUEST', req.body);
+
       if(!ISBN) res.status(400).send(createInvalidPropertyError('ISBN'));
 
       const id = generateUUID();

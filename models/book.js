@@ -2,9 +2,9 @@ import request from 'request-promise';
 import { upsert } from '../util/db-utils';
 
 function get(pool, id) {
-  const query = `SELECT "Book".*, "Rental".accountId as rentee, "Rental".startDate as rentalStartDate 
-            FROM "Library"."Book" 
-            LEFT JOIN "Library"."Rental" 
+  const query = `SELECT "Book".*, "Rental".accountId as rentee, "Rental".startDate as rentalStartDate
+            FROM "Library"."Book"
+            LEFT JOIN "Library"."Rental"
             ON "Rental".bookId = "Book".id`;
   if (id) {
     query.concat(`WHERE "Book".id = ${id}'`);
@@ -44,6 +44,5 @@ export function upsertBooks(pool, books) {
         };
       }
     }),
-  ))
-  .then(books => upsert(books, 'Book', pool));
+  )).then(books => upsert(books, 'Book', pool));
 }
