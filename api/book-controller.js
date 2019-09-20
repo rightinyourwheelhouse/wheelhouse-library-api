@@ -1,5 +1,6 @@
 import { getAllBooks, getBook, upsertBooks } from '../models/book';
 import { generateUUID } from '../util/uuid';
+import { createInvalidPropertyError } from './error-msg.js';
 import {
   bookAlreadyRentedError, bookNotRentedError, rentBook, returnBook,
 } from '../models/rental';
@@ -14,6 +15,10 @@ export function bookController(app, pool) {
   app.post('/api/v1/books',
     async (req, res) => {
       const { ISBN, ownerId } = req.body;
+
+      if(!ISBN) res.status(400).send(createInvalidPropertyError('ISBN'));
+      if(!ownerId) res.status(400).send(createInvalidPropertyError('ownerId'));
+
       const id = generateUUID();
       upsertBooks(pool, [{ id, ISBN, ownerId }])
         .then(() => getBook(pool, id))
@@ -24,6 +29,7 @@ export function bookController(app, pool) {
   app.post('/api/v1/books/:id/rent',
     async (req, res) => {
       const bookId = req.params.id;
+      if(!bookId) res.status(400).send(createInvalidPropertyError('bookId'));
       rentBook(pool, bookId, req.header('account-id'))
         .then(() => getBook(pool, bookId))
         .then(book => res.json(book))
@@ -36,6 +42,7 @@ export function bookController(app, pool) {
   app.post('/api/v1/books/:id/return',
     async (req, res) => {
       const bookId = req.params.id;
+      if(!bookId) res.status(400).send(createInvalidPropertyError('bookId'));
       returnBook(pool, bookId)
         .then(() => getBook(pool, bookId))
         .then(book => res.json(book))
