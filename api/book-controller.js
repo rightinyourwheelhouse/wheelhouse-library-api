@@ -17,7 +17,6 @@ export function bookController(app, pool) {
       const { ISBN, ownerId } = req.body;
 
       if(!ISBN) res.status(400).send(createInvalidPropertyError('ISBN'));
-      if(!ownerId) res.status(400).send(createInvalidPropertyError('ownerId'));
 
       const id = generateUUID();
       upsertBooks(pool, [{ id, ISBN, ownerId }])
