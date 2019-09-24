@@ -4,14 +4,14 @@ import migrate from 'node-pg-migrate';
 import cors from 'cors';
 
 import dotenv from 'dotenv';
-import { upsertBooks } from './models/book';
-import { upsertUsers } from './models/user';
+import { upsertBooks } from './src/models/book';
+import { upsertUsers } from './src/models/user';
 
-import { getUsers } from './util/slack-users';
-import { getBooks } from './util/book-seed';
-import { bookController } from './api/book-controller';
-import { rentalController } from './api/rental-controller';
-import { usersController } from './api/user-controller';
+import { getUsers } from './src/util/slack-users';
+import { getBooks } from './src/util/book-seed';
+import { bookController } from './src/api/book-controller';
+import { rentalController } from './src/api/rental-controller';
+import { usersController } from './src/api/user-controller';
 
 dotenv.config();
 
@@ -27,8 +27,11 @@ async function setupDatabase() {
     password: '',
     port: 54320,
   });
-  const dbClient = await pool.connect();
-  await migrate({ dbClient, dir: './migrations', direction: 'up' });
+  await migrate({
+    dbClient: await pool.connect(),
+    dir: './src/migrations',
+    direction: 'up'
+  });
   return pool;
 }
 
