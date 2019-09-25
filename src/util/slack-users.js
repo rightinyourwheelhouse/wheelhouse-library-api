@@ -14,6 +14,11 @@ const options = {
   json: true
 };
 
+function logError(err, defaultVal) {
+  console.error(chalk.red.inverse(err.message));
+  return defaultVal;
+}
+
 export async function getUsers() {
   return rp(options)
   .then(user_list => user_list.members
@@ -24,11 +29,7 @@ export async function getUsers() {
         'avatar': user.profile.image_192
       }
     })
-    : throw new Error(`Failed to get slack users because: ${user_list.error}`))
-  .catch(err => {
-    console.error(chalk.red.inverse(err.message));
-    return [];
-  });
+    : logError(new Error(`Failed to get slack users because: ${user_list.error}`), []));
 }
 
 

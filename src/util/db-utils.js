@@ -1,3 +1,8 @@
+/**
+ * Upsert users
+ * @param {{id: string}} insert - the objects to upsert into the table
+ * @return {any | {id: string}} insert - the objects to upsert into the table
+ */
 function filterEmptyValues(insert) {
   return Object.entries(insert)
     .reduce((object, [key, value]) => (value
@@ -7,9 +12,9 @@ function filterEmptyValues(insert) {
 
 /**
  * Upsert users
- * @param {Connection} pool - the pg pool
+ * @param {any} pool - the pg pool
  * @param {string} tableName - the name of the table to upsert into
- * @param {Array<Object>} inserts - the objects to upsert into the table
+ * @param {Array<{id: string}>} inserts - the objects to upsert into the table
  */
 export function upsert(inserts, tableName, pool) {
   return Promise.all(

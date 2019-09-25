@@ -15,27 +15,31 @@ export function getRentalsForAccount(pool, accountId) {
 
 /**
  * Rent book
- * @param {Connection} pool - the pg pool
+ * @param {any} pool - the pg pool
  * @param bookId {string} - book ID
  * @param accountId {string} - user ID
  */
 export function rentBook(pool, bookId, accountId) {
   return getRentalsForBook(pool, bookId)
-  .then(rentals =>
-    rentals.rows.length > 0
-      ? throw new Error(bookAlreadyRentedError)
-      : pool.query(`INSERT INTO  "Library"."Rental" (bookId, accountId) VALUES ('${bookId}', '${accountId}')`));
+  .then(rentals => {
+    if (rentals.rows.length > 0) {
+      throw new Error(bookAlreadyRentedError);
+    }
+    return pool.query(`INSERT INTO  "Library"."Rental" (bookId, accountId) VALUES ('${bookId}', '${accountId}')`);
+  });
 }
 
 /**
  * Return book
- * @param {Connection} pool - the pg pool
+ * @param {any} pool - the pg pool
  * @param bookId {string} - book ID
  */
 export function returnBook(pool, bookId) {
   return getRentalsForBook(pool, bookId)
-  .then(rentals =>
-    rentals.rows.length <= 0
-      ? throw new Error(bookNotRentedError)
-      : pool.query(`DELETE FROM "Library"."Rental" WHERE bookId = '${bookId}'`));
+  .then(rentals => {
+    if (rentals.rows.length <= 0) {
+      throw new Error(bookNotRentedError);
+    }
+    return pool.query(`DELETE FROM "Library"."Rental" WHERE bookId = '${bookId}'`);
+  });
 }

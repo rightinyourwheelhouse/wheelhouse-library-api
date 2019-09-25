@@ -22,7 +22,7 @@ export function getBook(pool, bookId) {
 
 /**
  * Upsert books
- * @param {Connection} pool - the pg pool
+ * @param {any} pool - the pg pool
  * @param {Array<{id,ISBN,ownerId }>} books - the users to upsert
  */
 export function upsertBooks(pool, books) {
