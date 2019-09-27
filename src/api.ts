@@ -32,14 +32,14 @@ const corsOptions = {
 };
 const { CLIENT_ID, CLIENT_SECRET } = process.env;
 
-console.info("client-id ", CLIENT_ID);
-console.info("client-secret ", CLIENT_SECRET);
 // setup the strategy using defaults
 passport.use(new SlackStrategy({
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/slack/callback"
 }, (accessToken, refreshToken, profile, done) => {
     // optionally persist profile data
+    console.log("PROfILE", profile)
     done(null, profile);
 }));
 
@@ -63,11 +63,11 @@ function setupApp(pool) {
     const app = express();
 
     app.use(express.json());
-
     app.use(cors(corsOptions));
-
+    app.use(passport.initialize());
+    
     app.get("/", (req, res) => res.status(200).send({ message: "Wheelhouse Library API" }));
-
+    
     loginController(app, passport);
     bookController(app, pool);
     rentalController(app, pool);
