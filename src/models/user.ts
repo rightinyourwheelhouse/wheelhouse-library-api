@@ -1,7 +1,7 @@
-import { upsert } from "../util/db-utils";
+import {upsert} from "../util/db-utils";
 
 export function getAllUsers(pool) {
-  return pool.query('SELECT * FROM "Library"."Account"');
+    return pool.query('SELECT * FROM "Library"."Account"');
 }
 
 /**
@@ -10,6 +10,5 @@ export function getAllUsers(pool) {
  * @param {Array<{id,username,avatar}>} users - the users to upsert
  */
 export function upsertUsers(pool, users) {
-  return upsert(users, 'Account', pool);
+    return upsert(users, "Account", pool);
 }
-

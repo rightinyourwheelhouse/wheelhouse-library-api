@@ -1,35 +1,34 @@
 import chalk from "chalk";
+import {config} from "dotenv";
 import rp from "request-promise";
 
-require('dotenv').config();
+config();
 
-const BASE_URL = 'https://slack.com/api';
+const BASE_URL = "https://slack.com/api";
 const headers = {
-  'Authorization': `Bearer ${process.env.SLACK_OAUTH_TOKEN}`,
+    Authorization: `Bearer ${process.env.SLACK_OAUTH_TOKEN}`,
 };
 
 const options = {
-  headers: headers,
-  uri: `${BASE_URL}/users.list?token=${process.env.SLACK_OAUTH_TOKEN}`,
-  json: true
+    headers,
+    uri: `${BASE_URL}/users.list?token=${process.env.SLACK_OAUTH_TOKEN}`,
+    json: true,
 };
 
 function logError(err, defaultVal) {
-  console.error(chalk.red.inverse(err.message));
-  return defaultVal;
+    console.error(chalk.red.inverse(err.message));
+    return defaultVal;
 }
 
 export async function getUsers() {
-  return rp(options)
-  .then(user_list => user_list.members
-    ? user_list.members.map(user => {
-      return {
-        'id': user.id,
-        'username': user.name,
-        'avatar': user.profile.image_192
-      }
-    })
-    : logError(new Error(`Failed to get slack users because: ${user_list.error}`), []));
+    return rp(options)
+        .then(userList => userList.members
+            ? userList.members.map(user => {
+                return {
+                    id: user.id,
+                    username: user.name,
+                    avatar: user.profile.image_192,
+                };
+            })
+            : logError(new Error(`Failed to get slack users because: ${userList.error}`), []));
 }
-
-
