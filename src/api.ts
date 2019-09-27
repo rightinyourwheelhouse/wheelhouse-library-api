@@ -1,17 +1,21 @@
 import cors from "cors";
 import express from "express";
+import passport from 'passport';
+import { Strategy as SlackStrategy } from "passport-slack";
 import migrate from "node-pg-migrate";
-import {Client, Pool} from "pg";
+import { Client, Pool } from "pg";
 
 import dotenv from "dotenv";
-import {upsertBooks} from "./models/book";
-import {upsertUsers} from "./models/user";
+import { upsertBooks } from "./models/book";
+import { upsertUsers } from "./models/user";
 
-import {bookController} from "./api/book-controller";
-import {rentalController} from "./api/rental-controller";
-import {usersController} from "./api/user-controller";
-import {getBooks} from "./util/book-seed";
-import {getUsers} from "./util/slack-users";
+import { bookController } from "./api/book-controller";
+import { rentalController } from "./api/rental-controller";
+import { usersController } from "./api/user-controller";
+import {loginController} from "./api/login-controller";
+
+import { getBooks } from "./util/book-seed";
+import { getUsers } from "./util/slack-users";
 
 dotenv.config();
 
@@ -22,9 +26,22 @@ const pgConfig = {
     password: "",
     port: 54320,
 };
+
 const corsOptions = {
     origin: "http://localhost:1234",
 };
+const { CLIENT_ID, CLIENT_SECRET } = process.env;
+
+console.info("client-id ", CLIENT_ID);
+console.info("client-secret ", CLIENT_SECRET);
+// setup the strategy using defaults
+passport.use(new SlackStrategy({
+    clientID: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+}, (accessToken, refreshToken, profile, done) => {
+    // optionally persist profile data
+    done(null, profile);
+}));
 
 async function setupDatabase() {
     const pool = new Pool(pgConfig);
@@ -49,11 +66,13 @@ function setupApp(pool) {
 
     app.use(cors(corsOptions));
 
-    app.get("/", (req, res) => res.status(200).send({message: "Wheelhouse Library API"}));
+    app.get("/", (req, res) => res.status(200).send({ message: "Wheelhouse Library API" }));
 
+    loginController(app, passport);
     bookController(app, pool);
     rentalController(app, pool);
     usersController(app, pool);
+
     app.listen(3000);
 }
 
