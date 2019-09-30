@@ -8,6 +8,6 @@ export function loginController(app, passport) {
     // OAuth callback url
     app.get("/auth/slack/callback",
         passport.authorize("slack", { failureRedirect: "/login" }),
-        (req, res) => console.info("RES", res), //TODO: redirect.
+        (req, res) => console.info("RES", res), // TODO: redirect.
     );
 }
