@@ -7,7 +7,10 @@ export function loginController(app, passport) {
 
     // OAuth callback url
     app.get("/auth/slack/callback",
-        passport.authorize("slack", { failureRedirect: "/login" }),
-        (req, res) => console.info("RES", res), // TODO: redirect.
+        passport.authorize("slack", { failureRedirect: "/login" }), // TODO: add failureRedirects
+        (req, res) => {
+            console.info(req.session);
+            res.redirect("/overview");
+        }, // TODO: redirect in env + use right url
     );
 }
