@@ -7,7 +7,7 @@
     "build": "run-s lint build-ts",
     "build-ts": "tsc",
     "serve": "node dist/api.js",
-    "start": "run-s build serve",
+    "start": "run-s build-ts serve",
     "watch": "tsc -w & nodemon dist/api.js",
     "lint": "tslint src/**/*.ts"
   },
