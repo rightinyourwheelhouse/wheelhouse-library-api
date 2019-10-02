@@ -1,9 +1,9 @@
 import cors from "cors";
 import express from "express";
 import session from "express-session";
-import passport from 'passport';
-import { Strategy as SlackStrategy } from "passport-slack";
 import migrate from "node-pg-migrate";
+import passport from "passport";
+import { Strategy as SlackStrategy } from "passport-slack";
 import { Client, Pool } from "pg";
 
 import dotenv from "dotenv";
@@ -11,9 +11,9 @@ import { upsertBooks } from "./models/book";
 import { upsertUsers } from "./models/user";
 
 import { bookController } from "./api/book-controller";
+import { loginController } from "./api/login-controller";
 import { rentalController } from "./api/rental-controller";
 import { usersController } from "./api/user-controller";
-import { loginController } from "./api/login-controller";
 
 import { getBooks } from "./util/book-seed";
 import { getUsers } from "./util/slack-users";
@@ -49,8 +49,8 @@ async function setupDatabase() {
     return pool;
 }
 // used to serialize the user for the session
-passport.serializeUser(function(user, done) {
-    done(null, user.id); 
+passport.serializeUser((user, done) => {
+    done(null, user.id);
    // where is this user.id going? Are we supposed to access this anywhere?
 });
 
@@ -59,17 +59,17 @@ function setupApp(pool) {
     app.use(session({
         secret: "test",
         resave: false,
-        saveUninitialized: true
-    }))
+        saveUninitialized: true,
+    }));
     // setup the strategy using defaults
     passport.use(new SlackStrategy({
         clientID: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
-        callbackURL: `${BASE_URL}/auth/slack/callback`
+        callbackURL: `${BASE_URL}/auth/slack/callback`,
     }, (accessToken, refreshToken, profile, done) => {
-        // TODO: user the pool to upsert the user based on the profile. 
-        // TODO: put user in session 
-        console.log("user profile: " + profile);
+        // TODO: user the pool to upsert the user based on the profile.
+        // TODO: put user in session
+        // console.log("user profile: " + profile);
         done(null, profile);
     }));
 
