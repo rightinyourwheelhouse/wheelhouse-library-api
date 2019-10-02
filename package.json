@@ -9,7 +9,7 @@
     "serve": "node dist/api.js",
     "start": "run-s build-ts serve",
     "watch": "tsc -w & nodemon dist/api.js",
-    "lint": "tslint src/**/*.ts"
+    "lint": "tslint src/**/*.ts src/*.ts"
   },
   "nodemonConfig": {
     "watch": [
