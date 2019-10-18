@@ -18,6 +18,6 @@ export function upsertUsers(pool, users) {
  * @param {any} pool - the pg pool
  * @param {id,username,avatar}>} user - the user to upsert
  */
-export function  upsertUser(pool, user) {
+export function upsertUser(pool, user) {
     return upsert([user], "Account", pool);
 }

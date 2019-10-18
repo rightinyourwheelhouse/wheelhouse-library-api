@@ -22,10 +22,10 @@ dotenv.config();
 
 const pgConfig = {
     user: "postgres",
-    host: "127.0.0.1",
+    host: "postgres",
     database: "postgres",
     password: "",
-    port: 54320,
+    port: 5432,
 };
 
 const corsOptions = {
