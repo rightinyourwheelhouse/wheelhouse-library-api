@@ -70,7 +70,6 @@ function setupApp(pool) {
 
     app.use(express.json());
     app.use(cors(corsOptions));
-    app.use(passport.initialize());
 
     app.get("/", (req, res) =>
         res.status(200).send({message: "Wheelhouse Library API"}));
