@@ -16,6 +16,7 @@ import { rentalController } from "./api/rental-controller";
 import { usersController } from "./api/user-controller";
 
 import { getBooks } from "./util/book-seed";
+import { checkEnvVars } from "./util/env-validation";
 import { getUsers } from "./util/slack-users";
 
 dotenv.config();
@@ -31,6 +32,9 @@ const pgConfig = {
 const corsOptions = {
     origin: "http://localhost:1234",
 };
+
+checkEnvVars(process.env);
+
 const { CLIENT_ID, CLIENT_SECRET, BASE_URL } = process.env;
 
 async function setupDatabase() {
@@ -45,14 +49,8 @@ async function setupDatabase() {
         ignorePattern: "",
 
     });
-    // client.release();
     return pool;
 }
-// used to serialize the user for the session
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-   // where is this user.id going? Are we supposed to access this anywhere?
-});
 
 function setupApp(pool) {
     const app = express();
