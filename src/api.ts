@@ -34,7 +34,7 @@ const corsOptions = {
 
 checkEnvVars(process.env);
 
-const { CLIENT_ID, CLIENT_SECRET, BASE_URL } = process.env;
+const { SLACK_CLIENT_ID, SLACK_CLIENT_SECRET, SLACK_CALLBACK_URL } = process.env;
 
 async function setupDatabase() {
     const pool = new Pool(pgConfig);
@@ -56,9 +56,9 @@ function setupApp(pool) {
 
     // setup the strategy using defaults
     passport.use(new SlackStrategy({
-        clientID: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        callbackURL: `${BASE_URL}/auth/slack/callback`,
+        clientID: SLACK_CLIENT_ID,
+        clientSecret: SLACK_CLIENT_SECRET,
+        callbackURL: SLACK_CALLBACK_URL,
     }, async (accessToken, refreshToken, profile, done) => {
         await upsertUser(pool, {
             id: profile.user.id,
