@@ -13,11 +13,12 @@ export function upsertUsers(pool, users) {
     return upsert(users, "Account", pool);
 }
 
-/**
- * Upsert users
- * @param {any} pool - the pg pool
- * @param {id,username,avatar}>} user - the user to upsert
- */
-export function upsertUser(pool, user) {
+export function upsertUser(pool, user: User) {
     return upsert([user], "Account", pool);
+}
+
+export interface User {
+    id: string;
+    username: string;
+    avatar: string;
 }
