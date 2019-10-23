@@ -7,7 +7,7 @@ import { Client, Pool } from "pg";
 
 import dotenv from "dotenv";
 import { upsertBooks } from "./models/book";
-import { upsertUsers } from "./models/user";
+import { upsertUser, upsertUsers } from "./models/user";
 
 import { bookController } from "./api/book-controller";
 import { loginController } from "./api/login-controller";
@@ -59,10 +59,12 @@ function setupApp(pool) {
         clientID: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         callbackURL: `${BASE_URL}/auth/slack/callback`,
-    }, (accessToken, refreshToken, profile, done) => {
-        // TODO: user the pool to upsert the user based on the profile.
-        // TODO: put user in session
-        // console.log("user profile: " + profile);
+    }, async (accessToken, refreshToken, profile, done) => {
+        await upsertUser(pool, {
+            id: profile.user.id,
+            avatar: profile.user.image_512,
+            username: profile.user.name,
+        });
         done(null, profile);
     }));
 
@@ -70,7 +72,8 @@ function setupApp(pool) {
     app.use(cors(corsOptions));
     app.use(passport.initialize());
 
-    app.get("/", (req, res) => res.status(200).send({ message: "Wheelhouse Library API" }));
+    app.get("/", (req, res) =>
+        res.status(200).send({message: "Wheelhouse Library API"}));
 
     loginController(app, passport);
     bookController(app, pool);
