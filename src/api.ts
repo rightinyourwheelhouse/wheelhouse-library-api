@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-import session from "express-session";
 import migrate from "node-pg-migrate";
 import passport from "passport";
 import { Strategy as SlackStrategy } from "passport-slack";
@@ -54,11 +53,7 @@ async function setupDatabase() {
 
 function setupApp(pool) {
     const app = express();
-    app.use(session({
-        secret: "test",
-        resave: false,
-        saveUninitialized: true,
-    }));
+
     // setup the strategy using defaults
     passport.use(new SlackStrategy({
         clientID: CLIENT_ID,
