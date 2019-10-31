@@ -1,0 +1,16 @@
+import request from "request-promise";
+
+export function getGoogleBooksMetaData(book) {
+    return request({
+        url: {
+            protocol: "https",
+            hostname: "www.googleapis.com",
+            pathname: "/books/v1/volumes",
+            query: {
+                q: `+isbn:${book.ISBN}`,
+                api: process.env.GOOGLE_API_KEY,
+            },
+        },
+        json: true,
+    }).then((googleBooks) => googleBooks.items ? googleBooks.items[0].volumeInfo : null);
+}

@@ -1,5 +1,5 @@
 import {Pool} from "pg";
-import request from "request-promise";
+import {getGoogleBooksMetaData} from "../service/google-books";
 import {upsert} from "../util/db-utils";
 import {qrify} from "../util/qr";
 
@@ -24,13 +24,9 @@ export function getBook(pool, bookId) {
 
 export function upsertBooks(pool: Pool, inserts: Book[]) {
     return Promise.all(inserts.map(
-        book => request({
-            uri: `https://www.googleapis.com/books/v1/volumes?q=+isbn:${book.ISBN}`,
-            json: true,
-        }).then(async (googleBooks) => {
-            if (googleBooks.items) {
+        book => getGoogleBooksMetaData(book).then(async (metadata) => {
+            if (metadata) {
                 const QRCode = await qrify(book.id);
-                const metadata = googleBooks.items[0].volumeInfo;
                 return {
                     ...book,
                     title: (metadata.subtitle
