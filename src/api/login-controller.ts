@@ -5,14 +5,11 @@ import {log} from "../util/debug-logger";
 
 export function loginController(app: core.Express, pool) {
     // path to start the OAuth flow
-    const {SLACK_CLIENT_ID, SLACK_CLIENT_SECRET, SLACK_CALLBACK_URL} = process.env;
+    const {SLACK_CLIENT_ID, SLACK_CLIENT_SECRET} = process.env;
     app.get("/api/v1/auth/slack",
         async (req, res) => {
-            log(JSON.stringify(req.query, null, 4));
-            const uri = `https://slack.com/api/oauth.access?code=${req.query.code}&client_secret=${SLACK_CLIENT_SECRET}&client_id=${SLACK_CLIENT_ID}`;
-            log(uri);
             const profile = await request({
-                uri,
+                uri: `https://slack.com/api/oauth.access?code=${req.query.code}&client_secret=${SLACK_CLIENT_SECRET}&client_id=${SLACK_CLIENT_ID}`,
                 json: true,
             });
             if (profile.ok) {
