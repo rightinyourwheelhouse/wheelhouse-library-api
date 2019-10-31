@@ -1,8 +1,6 @@
 import cors from "cors";
 import express from "express";
 import migrate from "node-pg-migrate";
-import passport from "passport";
-import { Strategy as SlackStrategy } from "passport-slack";
 import { Client, Pool } from "pg";
 
 import { upsertBooks } from "./models/book";
@@ -51,27 +49,13 @@ async function setupDatabase() {
 function setupApp(pool) {
     const app = express();
 
-    // setup the strategy using defaults
-    passport.use(new SlackStrategy({
-        clientID: SLACK_CLIENT_ID,
-        clientSecret: SLACK_CLIENT_SECRET,
-        callbackURL: SLACK_CALLBACK_URL,
-    }, async (accessToken, refreshToken, profile, done) => {
-        await upsertUser(pool, {
-            id: profile.user.id,
-            avatar: profile.user.image_512,
-            username: profile.user.name,
-        });
-        done(null, profile);
-    }));
-
     app.use(express.json());
     app.use(cors(corsOptions));
 
     app.get("/", (req, res) =>
         res.status(200).send({message: "Wheelhouse Library API"}));
 
-    loginController(app, passport);
+    loginController(app, pool);
     bookController(app, pool);
     rentalController(app, pool);
     usersController(app, pool);
