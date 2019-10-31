@@ -18,8 +18,10 @@ export function loginController(app: core.Express, pool) {
                     avatar: profile.user.image_1024,
                     username: profile.user.name,
                 });
+                res.send(profile);
+            } else {
+                res.status(401).send(profile);
             }
-            res.send(profile);
         });
 
 }
