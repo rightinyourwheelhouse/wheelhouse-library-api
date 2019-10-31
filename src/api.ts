@@ -90,7 +90,7 @@ async function seed(pool) {
 
 setupDatabase().then(async (pool) => {
     setupApp(pool);
-    // await seed(pool);
+    await seed(pool);
     // tslint:disable-next-line:no-console
     console.log("Running Wheelhouse Library RESTful API @ PORT:3000");
 });
