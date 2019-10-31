@@ -1,8 +1,5 @@
 import chalk from "chalk";
-import {config} from "dotenv";
 import rp from "request-promise";
-
-config();
 
 const BASE_URL = "https://slack.com/api";
 const headers = {

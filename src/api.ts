@@ -5,7 +5,6 @@ import passport from "passport";
 import { Strategy as SlackStrategy } from "passport-slack";
 import { Client, Pool } from "pg";
 
-import dotenv from "dotenv";
 import { upsertBooks } from "./models/book";
 import { upsertUser, upsertUsers } from "./models/user";
 
@@ -17,8 +16,6 @@ import { usersController } from "./api/user-controller";
 import { getBooks } from "./util/book-seed";
 import { checkEnvVars } from "./util/env-validation";
 import { getUsers } from "./util/slack-users";
-
-dotenv.config();
 
 const pgConfig = {
     user: "postgres",
