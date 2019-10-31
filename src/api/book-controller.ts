@@ -17,12 +17,18 @@ export function bookController(app, pool) {
             if (!ISBN) {
                 res.status(400).send(createInvalidPropertyError("ISBN"));
             }
-
             const id = generateUUID();
             upsertBooks(pool, [{id, ISBN, ownerId}])
                 .then(() => getBook(pool, id))
                 .then(book => res.json(book))
                 .catch(err => res.status(500).send(err.message));
+        });
+
+    app.get("/api/v1/books/:id",
+        async (req, res) => {
+            const bookId = req.params.id;
+            const books = await getBook(pool, bookId);
+            await res.json(books);
         });
 
     app.post("/api/v1/books/:id/rent",
