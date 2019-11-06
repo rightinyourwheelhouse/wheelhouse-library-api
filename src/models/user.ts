@@ -8,7 +8,8 @@ export function getAllUsers(pool) {
 
 export function getUser(pool, id) {
     log(`Getting user with id ${id}`);
-    return pool.query(`SELECT * FROM "Library"."Account" WHERE "Account".id = '${id}'`);
+    return pool.query(`SELECT * FROM "Library"."Account" WHERE "Account".id = '${id}'`)
+        .then(res => (res.rows.length ? res.rows[0] : null));
 }
 
 /**
