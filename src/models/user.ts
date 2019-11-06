@@ -6,6 +6,11 @@ export function getAllUsers(pool) {
     return pool.query('SELECT * FROM "Library"."Account"');
 }
 
+export function getUser(pool, id) {
+    log(`Getting user with id ${id}`);
+    return pool.query(`SELECT * FROM "Library"."Account" WHERE "Account".id = '${id}'`);
+}
+
 /**
  * Upsert users
  * @param {any} pool - the pg pool
