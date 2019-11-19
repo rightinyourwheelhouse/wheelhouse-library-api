@@ -1,6 +1,7 @@
 import * as core from "express-serve-static-core";
 import request from "request-promise";
 import {getUser, upsertUser} from "../models/user";
+import {log} from "../util/debug-logger";
 
 export function loginController(app: core.Express, pool) {
     // path to start the OAuth flow
@@ -12,10 +13,11 @@ export function loginController(app: core.Express, pool) {
                 json: true,
             });
             if (response.ok) {
-                const {id , image_1024: avatar, name: username} = response.user;
+                const { access_token, user} = response;
+                const {id, image_1024: avatar, name: username} = user;
                 await upsertUser(pool, {id, avatar, username});
-                const user = await getUser(pool, id);
-                res.send(user);
+                const dbUser = await getUser(pool, id);
+                res.send(Object.assign(dbUser, {access_token}));
             } else {
                 res.status(401).send(response);
             }
