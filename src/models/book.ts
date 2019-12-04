@@ -1,8 +1,8 @@
 import {Pool} from "pg";
 import {getGoogleBooksMetaData} from "../service/google-books";
 import {upsert} from "../util/db-utils";
-import {qrify} from "../util/qr";
 import {log} from "../util/debug-logger";
+import {qrify} from "../util/qr";
 
 function get(pool, id?) {
     let query = `SELECT "Book".*, "Rental".accountId as rentee, "Rental".startDate as rentalStartDate

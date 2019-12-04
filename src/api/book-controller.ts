@@ -1,8 +1,8 @@
 import {getAllBooks, getBook, upsertBooks} from "../models/book";
 import {rentBook, returnBook} from "../models/rental";
+import {log} from "../util/debug-logger";
 import {bookAlreadyRentedError, bookNotRentedError, createInvalidPropertyError} from "../util/error-msg";
 import {generateUUID} from "../util/uuid";
-import {log} from "../util/debug-logger";
 
 export function bookController(app, pool) {
     app.get("/api/v1/books",
