@@ -16,11 +16,6 @@ import { checkEnvVars } from "./util/env-validation";
 import { getUsers } from "./util/slack-users";
 import dotenv from 'dotenv';
 
-const result = dotenv.config();
-if (result.error) {
-  throw result.error;
-}
-
 const pgConfig = {
     connectionString: process.env.DATABASE_URL,
     ssl: true,
