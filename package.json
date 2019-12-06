@@ -4,10 +4,10 @@
   "description": "API for the Wheelhouse Library App",
   "main": "api.js",
   "scripts": {
-    "build": "run-s lint build-ts",
     "build-ts": "tsc",
+    "postinstall": "npm run build-ts",
     "serve": "node dist/api.js",
-    "start": "run-s build-ts serve",
+    "start": "npm run serve",
     "watch": "tsc-watch --noClear --onSuccess 'node dist/api.js'",
     "lint": "tslint src/**/*.ts src/*.ts"
   },
@@ -29,6 +29,7 @@
     "@types/request-promise": "^4.1.44",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "node-pg-migrate": "^3.22.1",

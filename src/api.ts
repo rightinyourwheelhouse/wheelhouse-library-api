@@ -14,18 +14,22 @@ import { usersController } from "./api/user-controller";
 import { getBooks } from "./util/book-seed";
 import { checkEnvVars } from "./util/env-validation";
 import { getUsers } from "./util/slack-users";
+import dotenv from 'dotenv';
+
+const result = dotenv.config();
+if (result.error) {
+  throw result.error;
+}
 
 const pgConfig = {
-    user: "postgres",
-    host: "postgres",
-    database: "postgres",
-    password: "",
-    port: 5432,
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
 };
 
 const corsOptions = {
     origin: "http://localhost:1234",
 };
+
 
 checkEnvVars(process.env);
 
@@ -60,7 +64,7 @@ function setupApp(pool) {
     rentalController(app, pool);
     usersController(app, pool);
 
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -73,5 +77,5 @@ setupDatabase().then(async (pool) => {
     setupApp(pool);
     await seed(pool);
     // tslint:disable-next-line:no-console
-    console.log("Running Wheelhouse Library RESTful API @ PORT:3000");
+    console.log(`Running Wheelhouse Library RESTful API @ PORT: ${process.env.PORT || 3000}`);
 });
