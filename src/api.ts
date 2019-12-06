@@ -14,7 +14,6 @@ import { usersController } from "./api/user-controller";
 import { getBooks } from "./util/book-seed";
 import { checkEnvVars } from "./util/env-validation";
 import { getUsers } from "./util/slack-users";
-import dotenv from 'dotenv';
 
 const pgConfig = {
     connectionString: process.env.DATABASE_URL,
