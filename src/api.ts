@@ -21,7 +21,7 @@ const pgConfig = {
 };
 
 const corsOptions = {
-    origin: "http://localhost:1234",
+    origin: "https://whla-app-0.herokuapp.com",
 };
 
 
