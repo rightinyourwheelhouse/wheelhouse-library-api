@@ -21,9 +21,8 @@ const pgConfig = {
 };
 
 const corsOptions = {
-    origin: "https://whla-app-0.herokuapp.com",
+    origin: "https://whla-app.herokuapp.com",
 };
-
 
 checkEnvVars(process.env);
 
