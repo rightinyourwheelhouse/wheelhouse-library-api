@@ -21,7 +21,7 @@ const pgConfig = {
 };
 
 const whitelist = [
-  "https://whla-app.herokuapp.com/",
+  "https://whla-app.herokuapp.com",
   "http://localhost:3000", // new dev with react-create-app
   "http://localhost:1234", // old dev with parcel-bundler
 ];
