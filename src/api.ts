@@ -20,8 +20,20 @@ const pgConfig = {
     ssl: true,
 };
 
+const whitelist = [
+  "https://whla-app.herokuapp.com/",
+  "http://localhost:3000", // new dev with react-create-app
+  "http://localhost:1234", // old dev with parcel-bundler
+];
+
 const corsOptions = {
-    origin: "https://whla-app.herokuapp.com",
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS violation: Origin ${origin} is not allowed!`));
+    }
+  },
 };
 
 checkEnvVars(process.env);
