@@ -1,16 +1,17 @@
 export function checkEnvVars(processEnv) {
-    const {SLACK_CLIENT_ID, SLACK_CLIENT_SECRET, SLACK_CALLBACK_URL, SLACK_OAUTH_TOKEN} = processEnv;
+    const requiredVars = [
+        "SLACK_CLIENT_ID",
+        "SLACK_CLIENT_SECRET",
+        "SLACK_CALLBACK_URL",
+        "SLACK_OAUTH_TOKEN",
+        "DATABASE_URL",
+    ];
 
-    if (!SLACK_CLIENT_ID) {
-        throw new Error("SLACK_CLIENT_ID not set!");
-    }
-    if (!SLACK_CLIENT_SECRET) {
-        throw new Error("SLACK_CLIENT_SECRET not set!");
-    }
-    if (!SLACK_OAUTH_TOKEN) {
-        throw new Error("SLACK_OAUTH_TOKEN not set!");
-    }
-    if (!SLACK_CALLBACK_URL) {
-        throw new Error("SLACK_CALLBACK_URL not set!");
-    }
+    requiredVars.forEach(envvar => {
+        if (!processEnv[envvar]) {
+            throw new Error(`${envvar} not set!`);
+        } else {
+            return;
+        }
+    });
 }
