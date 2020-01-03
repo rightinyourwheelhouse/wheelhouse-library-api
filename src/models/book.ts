@@ -12,7 +12,7 @@ function get(pool, id?) {
     if (id) {
       query = query.concat(`\nWHERE "Book".id = '${id}'`);
     }
-    log(`Querying books ${query} \n\t bookId = ${id}`);
+    log(`Querying books ${query}`);
     return pool.query(query);
 }
 
