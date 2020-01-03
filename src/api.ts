@@ -1,23 +1,25 @@
 import cors from "cors";
 import express from "express";
 import migrate from "node-pg-migrate";
-import { Client, Pool } from "pg";
+import {Client, Pool} from "pg";
 
-import { upsertBooks } from "./models/book";
-import { upsertUser, upsertUsers } from "./models/user";
+import {upsertBooks} from "./models/book";
+import {upsertUsers} from "./models/user";
 
-import { bookController } from "./api/book-controller";
-import { loginController } from "./api/login-controller";
-import { rentalController } from "./api/rental-controller";
-import { usersController } from "./api/user-controller";
+import {bookController} from "./api/book-controller";
+import {loginController} from "./api/login-controller";
+import {rentalController} from "./api/rental-controller";
+import {usersController} from "./api/user-controller";
 
-import { getBooks } from "./util/book-seed";
-import { checkEnvVars } from "./util/env-validation";
-import { getUsers } from "./util/slack-users";
+import {getBooks} from "./util/book-seed";
+import {checkEnvVars} from "./util/env-validation";
+import {getUsers} from "./util/slack-users";
+
+checkEnvVars(process.env);
 
 const pgConfig = {
     connectionString: process.env.DATABASE_URL,
-    ssl: true,
+    ssl: !process.env.DATABASE_NO_SSL,
 };
 
 const whitelist = [
@@ -35,10 +37,6 @@ const corsOptions = {
     }
   },
 };
-
-checkEnvVars(process.env);
-
-const { SLACK_CLIENT_ID, SLACK_CLIENT_SECRET, SLACK_CALLBACK_URL } = process.env;
 
 async function setupDatabase() {
     const pool = new Pool(pgConfig);
