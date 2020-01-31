@@ -6,7 +6,7 @@
   "scripts": {
     "build-ts": "tsc",
     "postinstall": "npm run build-ts",
-    "build:dev" : "npm-run-all lint build-ts",
+    "build:dev": "npm-run-all lint build-ts",
     "serve": "node dist/api.js",
     "start": "npm run serve",
     "watch": "tsc-watch --noClear --onSuccess 'node dist/api.js'",
