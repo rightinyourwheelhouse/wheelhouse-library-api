@@ -31,7 +31,7 @@
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.16.2",
     "node-pg-migrate": "^3.22.1",
     "passport-slack": "0.0.7",
